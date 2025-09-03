@@ -1,0 +1,833 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
+        <link rel="stylesheet" href="css/qgis2web.css">
+        <link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet.photon.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title>Instalaciones Especiales VAD 2022-2026</title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/L.Control.Layers.Tree.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet.photon.js"></script>
+        <script src="data/Torretas_1.js"></script>
+        <script src="data/Ornamentales_2.js"></script>
+        <script src="data/Viaductos_3.js"></script>
+        <script src="data/Pasosadesnivel_4.js"></script>
+        <script src="data/Torretas_5.js"></script>
+        <script src="data/Ornamentales_6.js"></script>
+        <script src="data/Viaducto_7.js"></script>
+        <script src="data/Subterranea_8.js"></script>
+        <script src="data/PasosaDesnivel_9.js"></script>
+        <script src="data/InstalacionesEspeciales_10.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:false, maxZoom:28, minZoom:1
+        }).fitBounds([[-13.038195781303118,-76.49657454351295],[-13.002347825304177,-76.44662988058539]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        // remove popup's row if "visible-with-data"
+        function removeEmptyRowsFromPopupContent(content, feature) {
+         var tempDiv = document.createElement('div');
+         tempDiv.innerHTML = content;
+         var rows = tempDiv.querySelectorAll('tr');
+         for (var i = 0; i < rows.length; i++) {
+             var td = rows[i].querySelector('td.visible-with-data');
+             var key = td ? td.id : '';
+             if (td && td.classList.contains('visible-with-data') && feature.properties[key] == null) {
+                 rows[i].parentNode.removeChild(rows[i]);
+             }
+         }
+         return tempDiv.innerHTML;
+        }
+        // add class to format popup if it contains media
+		function addClassToPopupIfMedia(content, popup) {
+			var tempDiv = document.createElement('div');
+			tempDiv.innerHTML = content;
+			if (tempDiv.querySelector('td img')) {
+				popup._contentNode.classList.add('media');
+					// Delay to force the redraw
+					setTimeout(function() {
+						popup.update();
+					}, 10);
+			} else {
+				popup._contentNode.classList.remove('media');
+			}
+		}
+        var title = new L.Control({'position':'topright'});
+        title.onAdd = function (map) {
+            this._div = L.DomUtil.create('div', 'info');
+            this.update();
+            return this._div;
+        };
+        title.update = function () {
+            this._div.innerHTML = '<h2>Instalaciones Especiales VAD 2022-2026</h2>';
+        };
+        title.addTo(map);
+        var zoomControl = L.control.zoom({
+            position: 'topleft'
+        }).addTo(map);
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_GoogleSatellite_0');
+        map.getPane('pane_GoogleSatellite_0').style.zIndex = 400;
+        var layer_GoogleSatellite_0 = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+            pane: 'pane_GoogleSatellite_0',
+            opacity: 1.0,
+            attribution: '<a href="https://www.google.at/permissions/geoguidelines/attr-guide.html">Map data ©2015 Google</a>',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 20
+        });
+        layer_GoogleSatellite_0;
+        map.addLayer(layer_GoogleSatellite_0);
+        function pop_Torretas_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Ubicación</th>\
+                        <td>' + (feature.properties['Instalacio'] !== null ? autolinker.link(String(feature.properties['Instalacio']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Distrito</th>\
+                        <td>' + (feature.properties['Instalac_1'] !== null ? autolinker.link(String(feature.properties['Instalac_1']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Tipo de Instalación</th>\
+                        <td>' + (feature.properties['Instalac_2'] !== null ? autolinker.link(String(feature.properties['Instalac_2']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Código Especial</th>\
+                        <td>' + (feature.properties['Instalac_3'] !== null ? autolinker.link(String(feature.properties['Instalac_3']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Potencia Asumida</th>\
+                        <td>' + (feature.properties['Instalac_4'] !== null ? autolinker.link(String(feature.properties['Instalac_4']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">VAD</th>\
+                        <td>' + (feature.properties['Instalac_5'] !== null ? autolinker.link(String(feature.properties['Instalac_5']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Torretas_1_0() {
+            return {
+                pane: 'pane_Torretas_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(0,254,255,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Torretas_1');
+        map.getPane('pane_Torretas_1').style.zIndex = 401;
+        map.getPane('pane_Torretas_1').style['mix-blend-mode'] = 'normal';
+        var layer_Torretas_1 = new L.geoJson(json_Torretas_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Torretas_1',
+            layerName: 'layer_Torretas_1',
+            pane: 'pane_Torretas_1',
+            onEachFeature: pop_Torretas_1,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Torretas_1_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Torretas_1);
+        map.addLayer(layer_Torretas_1);
+        function pop_Ornamentales_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Ubicación</th>\
+                        <td>' + (feature.properties['Instalacio'] !== null ? autolinker.link(String(feature.properties['Instalacio']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Distrito</th>\
+                        <td>' + (feature.properties['Instalac_1'] !== null ? autolinker.link(String(feature.properties['Instalac_1']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Tipo de Instalación</th>\
+                        <td>' + (feature.properties['Instalac_2'] !== null ? autolinker.link(String(feature.properties['Instalac_2']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Código Especial</th>\
+                        <td>' + (feature.properties['Instalac_3'] !== null ? autolinker.link(String(feature.properties['Instalac_3']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Potencia Asumida</th>\
+                        <td>' + (feature.properties['Instalac_4'] !== null ? autolinker.link(String(feature.properties['Instalac_4']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">VAD</th>\
+                        <td>' + (feature.properties['Instalac_5'] !== null ? autolinker.link(String(feature.properties['Instalac_5']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Ornamentales_2_0() {
+            return {
+                pane: 'pane_Ornamentales_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,229,0,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Ornamentales_2');
+        map.getPane('pane_Ornamentales_2').style.zIndex = 402;
+        map.getPane('pane_Ornamentales_2').style['mix-blend-mode'] = 'normal';
+        var layer_Ornamentales_2 = new L.geoJson(json_Ornamentales_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Ornamentales_2',
+            layerName: 'layer_Ornamentales_2',
+            pane: 'pane_Ornamentales_2',
+            onEachFeature: pop_Ornamentales_2,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Ornamentales_2_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Ornamentales_2);
+        map.addLayer(layer_Ornamentales_2);
+        function pop_Viaductos_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Ubicación</th>\
+                        <td>' + (feature.properties['Instalacio'] !== null ? autolinker.link(String(feature.properties['Instalacio']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Distrito</th>\
+                        <td>' + (feature.properties['Instalac_1'] !== null ? autolinker.link(String(feature.properties['Instalac_1']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Tipo de Instalación</th>\
+                        <td>' + (feature.properties['Instalac_2'] !== null ? autolinker.link(String(feature.properties['Instalac_2']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Código Especial</th>\
+                        <td>' + (feature.properties['Instalac_3'] !== null ? autolinker.link(String(feature.properties['Instalac_3']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Potencia Asumida</th>\
+                        <td>' + (feature.properties['Instalac_4'] !== null ? autolinker.link(String(feature.properties['Instalac_4']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">VAD</th>\
+                        <td>' + (feature.properties['Instalac_5'] !== null ? autolinker.link(String(feature.properties['Instalac_5']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Viaductos_3_0() {
+            return {
+                pane: 'pane_Viaductos_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,89,0,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Viaductos_3');
+        map.getPane('pane_Viaductos_3').style.zIndex = 403;
+        map.getPane('pane_Viaductos_3').style['mix-blend-mode'] = 'normal';
+        var layer_Viaductos_3 = new L.geoJson(json_Viaductos_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Viaductos_3',
+            layerName: 'layer_Viaductos_3',
+            pane: 'pane_Viaductos_3',
+            onEachFeature: pop_Viaductos_3,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Viaductos_3_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Viaductos_3);
+        map.addLayer(layer_Viaductos_3);
+        function pop_Pasosadesnivel_4(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Ubicación</th>\
+                        <td>' + (feature.properties['Instalacio'] !== null ? autolinker.link(String(feature.properties['Instalacio']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Distrito</th>\
+                        <td>' + (feature.properties['Instalac_1'] !== null ? autolinker.link(String(feature.properties['Instalac_1']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Tipo de Instalación</th>\
+                        <td>' + (feature.properties['Instalac_2'] !== null ? autolinker.link(String(feature.properties['Instalac_2']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Código Especial</th>\
+                        <td>' + (feature.properties['Instalac_3'] !== null ? autolinker.link(String(feature.properties['Instalac_3']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Potencia Asumida</th>\
+                        <td>' + (feature.properties['Instalac_4'] !== null ? autolinker.link(String(feature.properties['Instalac_4']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">VAD</th>\
+                        <td>' + (feature.properties['Instalac_5'] !== null ? autolinker.link(String(feature.properties['Instalac_5']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Pasosadesnivel_4_0() {
+            return {
+                pane: 'pane_Pasosadesnivel_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(29,0,255,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Pasosadesnivel_4');
+        map.getPane('pane_Pasosadesnivel_4').style.zIndex = 404;
+        map.getPane('pane_Pasosadesnivel_4').style['mix-blend-mode'] = 'normal';
+        var layer_Pasosadesnivel_4 = new L.geoJson(json_Pasosadesnivel_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Pasosadesnivel_4',
+            layerName: 'layer_Pasosadesnivel_4',
+            pane: 'pane_Pasosadesnivel_4',
+            onEachFeature: pop_Pasosadesnivel_4,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Pasosadesnivel_4_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Pasosadesnivel_4);
+        map.addLayer(layer_Pasosadesnivel_4);
+        function pop_Torretas_5(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Ubicación</th>\
+                        <td>' + (feature.properties['Instalacio'] !== null ? autolinker.link(String(feature.properties['Instalacio']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Distrito</th>\
+                        <td>' + (feature.properties['Instalac_1'] !== null ? autolinker.link(String(feature.properties['Instalac_1']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Tipo de Instalación</th>\
+                        <td>' + (feature.properties['Instalac_2'] !== null ? autolinker.link(String(feature.properties['Instalac_2']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Código Especial</th>\
+                        <td>' + (feature.properties['Instalac_3'] !== null ? autolinker.link(String(feature.properties['Instalac_3']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Potencia Asumida</th>\
+                        <td>' + (feature.properties['Instalac_4'] !== null ? autolinker.link(String(feature.properties['Instalac_4']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">VAD</th>\
+                        <td>' + (feature.properties['Instalac_5'] !== null ? autolinker.link(String(feature.properties['Instalac_5']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Torretas_5_0() {
+            return {
+                pane: 'pane_Torretas_5',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,127,0,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Torretas_5');
+        map.getPane('pane_Torretas_5').style.zIndex = 405;
+        map.getPane('pane_Torretas_5').style['mix-blend-mode'] = 'normal';
+        var layer_Torretas_5 = new L.geoJson(json_Torretas_5, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Torretas_5',
+            layerName: 'layer_Torretas_5',
+            pane: 'pane_Torretas_5',
+            onEachFeature: pop_Torretas_5,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Torretas_5_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Torretas_5);
+        map.addLayer(layer_Torretas_5);
+        function pop_Ornamentales_6(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Ubicación</th>\
+                        <td>' + (feature.properties['Instalacio'] !== null ? autolinker.link(String(feature.properties['Instalacio']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Distrito</th>\
+                        <td>' + (feature.properties['Instalac_1'] !== null ? autolinker.link(String(feature.properties['Instalac_1']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Tipo de Iluminación</th>\
+                        <td>' + (feature.properties['Instalac_2'] !== null ? autolinker.link(String(feature.properties['Instalac_2']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Código Especial</th>\
+                        <td>' + (feature.properties['Instalac_3'] !== null ? autolinker.link(String(feature.properties['Instalac_3']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Potencia Asumida</th>\
+                        <td>' + (feature.properties['Instalac_4'] !== null ? autolinker.link(String(feature.properties['Instalac_4']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">VAD</th>\
+                        <td>' + (feature.properties['Instalac_5'] !== null ? autolinker.link(String(feature.properties['Instalac_5']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Ornamentales_6_0() {
+            return {
+                pane: 'pane_Ornamentales_6',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,17,0,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Ornamentales_6');
+        map.getPane('pane_Ornamentales_6').style.zIndex = 406;
+        map.getPane('pane_Ornamentales_6').style['mix-blend-mode'] = 'normal';
+        var layer_Ornamentales_6 = new L.geoJson(json_Ornamentales_6, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Ornamentales_6',
+            layerName: 'layer_Ornamentales_6',
+            pane: 'pane_Ornamentales_6',
+            onEachFeature: pop_Ornamentales_6,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Ornamentales_6_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Ornamentales_6);
+        map.addLayer(layer_Ornamentales_6);
+        function pop_Viaducto_7(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Ubicación</th>\
+                        <td>' + (feature.properties['Instalacio'] !== null ? autolinker.link(String(feature.properties['Instalacio']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Distrito</th>\
+                        <td>' + (feature.properties['Instalac_1'] !== null ? autolinker.link(String(feature.properties['Instalac_1']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Tipo de Instalación</th>\
+                        <td>' + (feature.properties['Instalac_2'] !== null ? autolinker.link(String(feature.properties['Instalac_2']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Código Especial</th>\
+                        <td>' + (feature.properties['Instalac_3'] !== null ? autolinker.link(String(feature.properties['Instalac_3']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Potencia Asumida</th>\
+                        <td>' + (feature.properties['Instalac_4'] !== null ? autolinker.link(String(feature.properties['Instalac_4']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">VAD</th>\
+                        <td>' + (feature.properties['Instalac_5'] !== null ? autolinker.link(String(feature.properties['Instalac_5']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Viaducto_7_0() {
+            return {
+                pane: 'pane_Viaducto_7',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(145,82,45,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Viaducto_7');
+        map.getPane('pane_Viaducto_7').style.zIndex = 407;
+        map.getPane('pane_Viaducto_7').style['mix-blend-mode'] = 'normal';
+        var layer_Viaducto_7 = new L.geoJson(json_Viaducto_7, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Viaducto_7',
+            layerName: 'layer_Viaducto_7',
+            pane: 'pane_Viaducto_7',
+            onEachFeature: pop_Viaducto_7,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Viaducto_7_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Viaducto_7);
+        map.addLayer(layer_Viaducto_7);
+        function pop_Subterranea_8(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>Ubicación</strong><br />' + (feature.properties['Ubicación'] !== null ? autolinker.link(String(feature.properties['Ubicación']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Distrito</strong><br />' + (feature.properties['Distrito'] !== null ? autolinker.link(String(feature.properties['Distrito']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Tipo de Instalación</th>\
+                        <td>' + (feature.properties['TipoInstal'] !== null ? autolinker.link(String(feature.properties['TipoInstal']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Código Especial</th>\
+                        <td>' + (feature.properties['CódigoEsp'] !== null ? autolinker.link(String(feature.properties['CódigoEsp']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Potencia Asumida</th>\
+                        <td>' + (feature.properties['PotenciaAs'] !== null ? autolinker.link(String(feature.properties['PotenciaAs']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">VAD</th>\
+                        <td>' + (feature.properties['VAD'] !== null ? autolinker.link(String(feature.properties['VAD']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Subterranea_8_0() {
+            return {
+                pane: 'pane_Subterranea_8',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(147,255,0,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Subterranea_8');
+        map.getPane('pane_Subterranea_8').style.zIndex = 408;
+        map.getPane('pane_Subterranea_8').style['mix-blend-mode'] = 'normal';
+        var layer_Subterranea_8 = new L.geoJson(json_Subterranea_8, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Subterranea_8',
+            layerName: 'layer_Subterranea_8',
+            pane: 'pane_Subterranea_8',
+            onEachFeature: pop_Subterranea_8,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Subterranea_8_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Subterranea_8);
+        map.addLayer(layer_Subterranea_8);
+        function pop_PasosaDesnivel_9(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Ubicación</th>\
+                        <td class="visible-with-data" id="Ubicación">' + (feature.properties['Ubicación'] !== null ? autolinker.link(String(feature.properties['Ubicación']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Distrito</th>\
+                        <td class="visible-with-data" id="Distrito">' + (feature.properties['Distrito'] !== null ? autolinker.link(String(feature.properties['Distrito']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Tipo de Instalación</th>\
+                        <td class="visible-with-data" id="TipoInstal">' + (feature.properties['TipoInstal'] !== null ? autolinker.link(String(feature.properties['TipoInstal']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Código Especial</th>\
+                        <td class="visible-with-data" id="CódigoEsp">' + (feature.properties['CódigoEsp'] !== null ? autolinker.link(String(feature.properties['CódigoEsp']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Potencia Asumida</th>\
+                        <td class="visible-with-data" id="PotenciaAs">' + (feature.properties['PotenciaAs'] !== null ? autolinker.link(String(feature.properties['PotenciaAs']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">VAD</th>\
+                        <td class="visible-with-data" id="VAD">' + (feature.properties['VAD'] !== null ? autolinker.link(String(feature.properties['VAD']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_PasosaDesnivel_9_0() {
+            return {
+                pane: 'pane_PasosaDesnivel_9',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(68,0,255,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_PasosaDesnivel_9');
+        map.getPane('pane_PasosaDesnivel_9').style.zIndex = 409;
+        map.getPane('pane_PasosaDesnivel_9').style['mix-blend-mode'] = 'normal';
+        var layer_PasosaDesnivel_9 = new L.geoJson(json_PasosaDesnivel_9, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_PasosaDesnivel_9',
+            layerName: 'layer_PasosaDesnivel_9',
+            pane: 'pane_PasosaDesnivel_9',
+            onEachFeature: pop_PasosaDesnivel_9,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_PasosaDesnivel_9_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_PasosaDesnivel_9);
+        map.addLayer(layer_PasosaDesnivel_9);
+        function pop_InstalacionesEspeciales_10(feature, layer) {
+            var popupContent = '<table>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_InstalacionesEspeciales_10_0(feature) {
+            switch(String(feature.properties['VAD'])) {
+                case 'VAD 2022':
+                    return {
+                pane: 'pane_InstalacionesEspeciales_10',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,0,3,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'VAD 2026':
+                    return {
+                pane: 'pane_InstalacionesEspeciales_10',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(49,255,0,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_InstalacionesEspeciales_10');
+        map.getPane('pane_InstalacionesEspeciales_10').style.zIndex = 410;
+        map.getPane('pane_InstalacionesEspeciales_10').style['mix-blend-mode'] = 'normal';
+        var layer_InstalacionesEspeciales_10 = new L.geoJson(json_InstalacionesEspeciales_10, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_InstalacionesEspeciales_10',
+            layerName: 'layer_InstalacionesEspeciales_10',
+            pane: 'pane_InstalacionesEspeciales_10',
+            onEachFeature: pop_InstalacionesEspeciales_10,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_InstalacionesEspeciales_10_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_InstalacionesEspeciales_10);
+        map.addLayer(layer_InstalacionesEspeciales_10);
+        var overlaysTree = [
+            {label: 'Instalaciones Especiales<br /><table><tr><td style="text-align: center;"><img src="legend/InstalacionesEspeciales_10_VAD20220.png" /></td><td>VAD 2022</td></tr><tr><td style="text-align: center;"><img src="legend/InstalacionesEspeciales_10_VAD20261.png" /></td><td>VAD 2026</td></tr></table>', layer: layer_InstalacionesEspeciales_10},
+        {label: '<b>VAD 2022</b>',  selectAllCheckbox: true, children: [
+            {label: '<img src="legend/PasosaDesnivel_9.png" /> Pasos a Desnivel', layer: layer_PasosaDesnivel_9},
+            {label: '<img src="legend/Subterranea_8.png" /> Subterranea', layer: layer_Subterranea_8},
+            {label: '<img src="legend/Viaducto_7.png" /> Viaducto', layer: layer_Viaducto_7},
+            {label: '<img src="legend/Ornamentales_6.png" /> Ornamentales', layer: layer_Ornamentales_6},
+            {label: '<img src="legend/Torretas_5.png" /> Torretas', layer: layer_Torretas_5},]},
+        {label: '<b>VAD 2026</b>',  selectAllCheckbox: true, children: [
+            {label: '<img src="legend/Pasosadesnivel_4.png" /> Pasos a desnivel', layer: layer_Pasosadesnivel_4},
+            {label: '<img src="legend/Viaductos_3.png" /> Viaductos', layer: layer_Viaductos_3},
+            {label: '<img src="legend/Ornamentales_2.png" /> Ornamentales', layer: layer_Ornamentales_2},
+            {label: '<img src="legend/Torretas_1.png" /> Torretas', layer: layer_Torretas_1},]},
+            {label: "Google Satellite", layer: layer_GoogleSatellite_0},]
+        var lay = L.control.layers.tree(null, overlaysTree,{
+            //namedToggle: true,
+            //selectorBack: false,
+            //closedSymbol: '&#8862; &#x1f5c0;',
+            //openedSymbol: '&#8863; &#x1f5c1;',
+            //collapseAll: 'Collapse all',
+            //expandAll: 'Expand all',
+            collapsed: true,
+        });
+        lay.addTo(map);
+        setBounds();
+        </script>
+    </body>
+</html>
